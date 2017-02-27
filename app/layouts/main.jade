@@ -1,0 +1,14 @@
+include ../../node_modules/bemto.jade/bemto
+- set_bemto_settings({ modifier: '--' })
+
+include ../jade-tools/scripts
+
+include ../blocks/root/root
+
+doctype html
+html(lang='ru')
+	include ../blocks/head/head
+	body
+		+root()
+		block scripts
+		+scripts(['build.js', 'https://apis.google.com/js/platform.js'])
