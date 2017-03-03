@@ -1,9 +1,10 @@
-.poster-list
+.poster-item
 	display flex
 	align-items center
-	margin-top 20px
 	font-size 20px
+	margin-bottom 20px
 
+.poster-item-info
 	&__part
 		&--left
 			margin-left 15px
@@ -11,16 +12,13 @@
 		&--right
 			margin-right 10px
 
-	&-item
-		margin-bottom 1px
-
-		&-photo
+	&__photo
 			size(128px)
 			background-size cover
 			background-position center
 			border-radius 50%
 			box-shadow 2px 5px 20px rgba(40, 20, 155, .8)
 
-.poster-list-item__text
+.poster-item-info__text
 	border none
 	background-color transparent

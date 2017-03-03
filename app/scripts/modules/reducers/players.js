@@ -1,3 +1,5 @@
+import DATABASE from '../database'
+
 export const initialState = [
 	{
 		nick: "leshagumash",
@@ -24,6 +26,7 @@ export const initialState = [
 		wn8: "2000",
 	}
 ]
+
 
 export default function () {
 	return initialState;
