@@ -4,3 +4,10 @@ export const changePlayersData = (players) => {
 		payload: players
 	}
 }
+
+export const addPlayer = (player) => {
+	return {
+		type: "ADD_PLAYER",
+		payload: player
+	}
+}

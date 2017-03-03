@@ -4,42 +4,66 @@ import {connect} from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PosterItem from './PosterItem';
 import {SCROLLBARS_STYLE} from '../constants';
-import {changePlayersData} from '../actions';
-import DATABASE from '../database';
+
+import {changePlayersData, addPlayer} from '../actions';
 
 class Poster extends Component {
 	constructor(props) {
 		super();
-		this.state = {
-			players: props.players
-		}
 		this.changePlayersData = this.changePlayersData.bind(this);
 		this.addPlayer = this.addPlayer.bind(this);
 	}
 	addPlayer() {
-		const {nick, favouriteTank, photoURL, wn8} = this.refs;
-		const {state, props} = this;
-		console.log(nick, favouriteTank, photoURL, wn8)
-		let newArrOfPlayers = state.players;
-		newArrOfPlayers.push({
-				nick: nick.value,
-				favouriteTank: favouriteTank.value,
-				photoURL: photoURL.value,
-				wn8: wn8.value,
+		const {props} = this;
+		const {nick, favouriteTank, wn8, photoURL} = this.refs;
+		props.addPlayer({
+			nick: nick.value,
+			favouriteTank: favouriteTank.value,
+			wn8: wn8.value,
+			photoURL: photoURL.value,
 		});
 	}
 	changePlayersData(id, data) {
-		const {state, props} = this;
-		const currentPlayers = state.players;
-		currentPlayers[id] = Object.assign(currentPlayers[id], data);
-		props.changePlayersData(currentPlayers);
-		this.setState({
-			players: currentPlayers
-		});
+		const {props} = this;
+		const currentPlayers = props.players;
+		props.changePlayersData({data: data, playerId: id});
+	}
+	render() {
+		const {props} = this;
+		return (
+			<Scrollbars style={SCROLLBARS_STYLE}>
+				<div className="poster">
+					<div className="poster__form">
+						<input
+							type="text"
+							placeholder="Введите ник..."
+							ref="nick"
+						/>
+						<input
+							type="text"
+							placeholder="Введите любимый танк..."
+							ref="favouriteTank"
+						/>
+						<input
+							type="text"
+							placeholder="Введите рейтинг wn8..."
+							ref="wn8"
+						/>
+						<input
+							type="text"
+							placeholder="Введите URL..."
+							ref="photoURL"
+						/>
+						<button onClick={this.addPlayer}>Добавить игрока</button>
+					</div>
+					{this.renderPlayers()}
+				</div>
+			</Scrollbars>
+		)
 	}
 	renderPlayers() {
-		const players = this.state.players;
-		const renderedPlayers = players.map((player, i) => {
+		const players = this.props.players;
+		return players.map((player, i) => {
 			return (
 				<PosterItem
 					nick={player.nick}
@@ -81,7 +105,8 @@ const mapStateToProps = (state) => {
 
 const matchDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		changePlayersData
+		changePlayersData,
+		addPlayer
 	}, dispatch)
 }
 
