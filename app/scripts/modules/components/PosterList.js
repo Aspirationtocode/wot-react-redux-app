@@ -14,6 +14,7 @@ class PosterList extends Component {
 	}
 	render() {
 		const {props, state} = this;
+		console.log('render')
 		return (
 			<div className="poster-list">
 				<div className="poster-list__part--left">

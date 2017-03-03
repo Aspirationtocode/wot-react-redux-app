@@ -4,37 +4,64 @@ import {connect} from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PosterList from './PosterList';
 import {SCROLLBARS_STYLE} from '../constants';
-import {changePlayersData} from '../actions';
+import {changePlayersData, addPlayer} from '../actions';
 
 class Poster extends Component {
 	constructor(props) {
 		super();
-		this.state = {
-			players: props.players
-		}
 		this.changePlayersData = this.changePlayersData.bind(this);
+		this.addPlayer = this.addPlayer.bind(this);
+	}
+	addPlayer() {
+		const {props} = this;
+		const {nick, favouriteTank, wn8, photoURL} = this.refs;
+		props.addPlayer({
+			nick: nick.value,
+			favouriteTank: favouriteTank.value,
+			wn8: wn8.value,
+			photoURL: photoURL.value,
+		});
 	}
 	changePlayersData(id, data) {
-		const {state, props} = this;
-		const currentPlayers = state.players;
-		currentPlayers[id] = Object.assign(currentPlayers[id], data);
-		props.changePlayersData(currentPlayers);
-		this.setState({
-			players: currentPlayers
-		});
+		const {props} = this;
+		const currentPlayers = props.players;
+		props.changePlayersData({data: data, playerId: id});
 	}
 	render() {
 		const {props} = this;
 		return (
 			<Scrollbars style={SCROLLBARS_STYLE}>
 				<div className="poster">
+					<div className="poster__form">
+						<input
+							type="text"
+							placeholder="Введите ник..."
+							ref="nick"
+						/>
+						<input
+							type="text"
+							placeholder="Введите любимый танк..."
+							ref="favouriteTank"
+						/>
+						<input
+							type="text"
+							placeholder="Введите рейтинг wn8..."
+							ref="wn8"
+						/>
+						<input
+							type="text"
+							placeholder="Введите URL..."
+							ref="photoURL"
+						/>
+						<button onClick={this.addPlayer}>Добавить игрока</button>
+					</div>
 					{this.renderPlayers()}
 				</div>
 			</Scrollbars>
 		)
 	}
 	renderPlayers() {
-		const players = this.state.players;
+		const players = this.props.players;
 		return players.map((player, i) => {
 			return (
 				<PosterList
@@ -59,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const matchDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		changePlayersData
+		changePlayersData,
+		addPlayer
 	}, dispatch)
 }
 
