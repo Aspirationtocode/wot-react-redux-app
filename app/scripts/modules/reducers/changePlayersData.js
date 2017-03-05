@@ -1,4 +1,4 @@
-import {initialState} from './players';
+import {initialState} from './initialState';
 export default function (state=initialState, action) {
 	switch (action.type) {
 		case "CHANGE_PLAYERS_DATA":
